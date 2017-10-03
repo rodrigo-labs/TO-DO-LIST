@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,20 +35,8 @@ public class TaskDao extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertTask(Task task) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues data = new ContentValues();
-
-        data.put("task", task.getTask());
-        data.put("date", task.getDate());
-        data.put("time", task.getTime());
-        data.put("done", task.isDone());
-
-        db.insert("task", null, data);
-    }
-
     public List<Task> getTasks() {
-        SQLiteDatabase db =getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String sql = "SELECT * FROM task;";
         Cursor cursor = db.rawQuery(sql, null);
 
@@ -65,5 +54,38 @@ public class TaskDao extends SQLiteOpenHelper {
 
         cursor.close();
         return tasks;
+    }
+
+    public void insert(Task task) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues data = getContentValuesTask(task);
+        db.insert("task", null, data);
+    }
+
+    public void delete(Task task) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {task.getId().toString()};
+        db.delete("task", "id = ?", params);
+    }
+
+    public void update(Task task) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues data = getContentValuesTask(task);
+        String[] params = {task.getId().toString()};
+        db.update("task", data, "id = ?", params);
+    }
+
+    @NonNull
+    private ContentValues getContentValuesTask(Task task) {
+        ContentValues data = new ContentValues();
+
+        data.put("task", task.getTask());
+        data.put("date", task.getDate());
+        data.put("time", task.getTime());
+        data.put("done", task.isDone());
+        return data;
     }
 }

@@ -1,6 +1,6 @@
 package br.com.rodrigo_labs.todolist;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,8 +24,16 @@ public class FormActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // instanciando o helper no metodo onCreate da activity
+        // start the helper on method onCreate of the activity
         helper = new FormHelper(this);
+
+        Intent intent = getIntent();
+        Task task = (Task) intent.getSerializableExtra("task");
+        if (task != null) {
+            toolbar.setTitle(R.string.title_activity_form_edit);
+
+            helper.setForm(task);
+        }
     }
 
     @Override
@@ -40,20 +48,21 @@ public class FormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
-                Task task = helper.getTask();
+                Task task = helper.getForm();
                 TaskDao dao = new TaskDao(this);
-                dao.insertTask(task);
+
+                if (task.getId() != null) {
+                    dao.update(task);
+                } else {
+                    dao.insert(task);
+                }
                 dao.close();
 
-                Toast.makeText(this, "Tarefa salva com sucesso", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.form_sucess, Toast.LENGTH_LONG).show();
                 finish();
-                break;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private Context getContext() {
-        return this;
     }
 }

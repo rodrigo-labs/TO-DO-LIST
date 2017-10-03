@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">To-Do List</string>
+    <!--activitys title-->
     <string name="title_activity_main">To-Do List</string>
-    <string name="title_activity_form_add">FormAddActivity</string>
+    <string name="sutitle_activity_main">date</string>
+    <string name="title_activity_form_add">Add a new task</string>
+    <string name="title_activity_form_edit">Edit a task</string>
+    <!--buttons-->
+    <string name="form_save">Save</string>
+    <string name="main_delete">Delete</string>
+    <!--hints-->
+    <string name="form_task">new task</string>
+    <string name="form_date">new date</string>
+    <string name="form_time">new time</string>
+    <!--messagens-->
+    <string name="form_sucess">Task saved sucessfully</string>
+
 </resources>

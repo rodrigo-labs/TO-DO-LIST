@@ -1,19 +1,21 @@
 package br.com.rodrigo_labs.todolist.model;
 
-public class Task {
+import java.io.Serializable;
 
-    private long id;
+public class Task implements Serializable {
+
+    private Long id;
     private String task;
     private String date;
     private String time;
     private boolean done;
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
